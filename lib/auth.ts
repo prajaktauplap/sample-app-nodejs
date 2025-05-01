@@ -59,8 +59,8 @@ export function setSession(session: SessionProps) {
 
 export async function getSession({ query: { context = '' } }: NextApiRequest) {
     if (typeof context !== 'string') return;
-    const { context: storeHash, user } = decodePayload(context);
-    const hasUser = await db.hasStoreUser(storeHash, user?.id);
+    const { context: storeHash, user } = decodePayload(context) as SessionProps;
+    const hasUser = await db.hasStoreUser(storeHash, String(user?.id));
 
     // Before retrieving session/ hitting APIs, check user
     if (!hasUser) {
